@@ -3,7 +3,7 @@
 # Song class
 class Song
   @@local_root = "/iTunes/"
-  @@server_root = "http://localhost:8000/"
+  @@server_root = "http://10.0.1.8:8000/"
   def initialize()
     @title = nil
     @artist = nil
@@ -116,6 +116,3 @@ def test
     puts "\n"
   end
 end
-
-
-test
