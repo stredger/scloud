@@ -44,8 +44,8 @@ while (session = webserver.accept)
     session.print reply
     session.close
     next
-  elsif resource.include?("Song/")
-    resource = resource.sub("Song/", music_lib_dir)
+  #elsif resource.include?("Song/")
+    #resource = resource.sub("Song/", music_lib_dir)
   else
     resource = base_dir + resource
   end
