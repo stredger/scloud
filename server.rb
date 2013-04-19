@@ -28,6 +28,7 @@ end
 while (session = webserver.accept)
   request = session.gets
   puts request
+  next if request.nil?
   trimmedrequest = request.gsub(/GET\ \//, '').gsub(/\ HTTP.*/, '').chomp
   resource = trimmedrequest
 
