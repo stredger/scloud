@@ -1,5 +1,8 @@
 
+
+# Song class
 class Song
+  @@location_root = "/Song/"
   def initialize()
     @title = nil
     @artist = nil
@@ -41,10 +44,14 @@ class Song
     puts "Location:\t" + @location
   end
 
+  def to_json
+    return "{\"title\":\"#{@title}\", \"artist\":\"#{@artist}\", \"album\":\"#{@album}\", \"time\":#{@time}, \"genre\":\"#{@genre}\", \"location\":\"#{@location}\"}"
+  end
+
 end
 
 
-
+# Functions
 
 def parse_line(line)
   vals = line.partition('><')
@@ -70,7 +77,7 @@ def song_list_from_xml(xml_file)
         song.add_attr(line)
         i += 1
       end
-      song_list << song if song.is_valid?
+      song_list << song.to_json if song.is_valid?
     else
       i += 1
     end
@@ -79,12 +86,14 @@ def song_list_from_xml(xml_file)
 end
 
 
+def test
+  music_lib = "test.xml" #"iTunes Music Library.xml"
 
-music_lib = "test.xml" #"iTunes Music Library.xml"
-songs = song_list_from_xml(music_lib)
+  songs = song_list_from_xml(music_lib)
 
-for s in songs
-  puts "--Song--"
-  s.print
-  puts "\n"
+  for s in songs
+    puts "--Song--"
+    puts s
+    puts "\n"
+  end
 end
