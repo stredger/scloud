@@ -2,7 +2,8 @@
 
 # Song class
 class Song
-  @@location_root = "/Song/"
+  @@local_root = "/iTunes/"
+  @@server_root = "http://localhost:8000/"
   def initialize()
     @title = nil
     @artist = nil
@@ -10,6 +11,21 @@ class Song
     @time = nil
     @genre = nil
     @location = nil
+  end
+
+  def set_local_root(path)
+    @@local_root = path unless path.nil?
+  end
+
+  def set_server_root(path)
+    @@server_root = path unless path.nil?
+  end
+
+  def format_location_path
+    chopped = @location.split(@@local_root, 2)
+    if chopped.length == 2
+      @location = @@server_root + chopped[-1] 
+    end
   end
 
   def add_attr(attr)
@@ -25,6 +41,7 @@ class Song
     when "Genre"
       @genre = attr[1]
     when "Location"
+      # parse attr[1]
       @location = attr[1]
     else
       nil
@@ -77,6 +94,8 @@ def song_list_from_xml(xml_file)
         song.add_attr(line)
         i += 1
       end
+
+      puts song.format_location_path
       song_list << song.to_json if song.is_valid?
     else
       i += 1
@@ -87,7 +106,7 @@ end
 
 
 def test
-  music_lib = "test.xml" #"iTunes Music Library.xml"
+  music_lib = "test/test.xml" #"iTunes Music Library.xml"
 
   songs = song_list_from_xml(music_lib)
 
@@ -97,3 +116,6 @@ def test
     puts "\n"
   end
 end
+
+
+test
