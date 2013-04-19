@@ -1,10 +1,11 @@
 require "socket"
 require "libparse.rb"
+require "Thread"
  
 
 webserver = TCPServer.new('localhost', 7654)
-base_dir = Dir.new(".")
-music_lib_dir = "~/db/scloud/test/"
+base_dir = Dir.pwd << "/"
+music_lib_dir = "test/"
 music_lib_file = "test.xml" #"iTunes Music Library.xml"
 
 def get_content_type(path)
@@ -45,10 +46,14 @@ while (session = webserver.accept)
     next
   elsif resource.include?("Song/")
     resource = resource.sub("Song/", music_lib_dir)
-    puts resource
+  else
+    resource = base_dir + resource
   end
 
+  puts resource
+
   if !File.exists?(resource)
+    puts "404 #{resource}"
     session.print "HTTP/1.1 404/Object Not Found\r\nSwick Server\r\n\r\n"
     session.print "404 - Resource cannot be found : #{resource} "
     session.close
