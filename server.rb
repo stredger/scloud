@@ -1,12 +1,10 @@
 require "socket"
-require "libparse.rb"
-require "Thread"
- 
+require "libparse.rb" 
 
 webserver = TCPServer.new('localhost', 7654)
 base_dir = Dir.pwd << "/"
 music_lib_dir = "test/"
-music_lib_file = "test.xml" #"iTunes Music Library.xml"
+music_lib_file = "test/test.xml" #"iTunes Music Library.xml"
 
 def get_content_type(path)
   ext = File.extname(path)
@@ -64,6 +62,7 @@ while (session = webserver.accept)
     session.print "HTTP/1.1 200/OK\r\nServer: Swick\r\nContent-type: #{contentType}\r\n\r\n"
     File.open(resource, "rb") do |f|
       while (!f.eof?) do
+        # the fking pipe gets broken while we send data to the player, catch the exception?
         buffer = f.read(256)
         session.write(buffer)
       end

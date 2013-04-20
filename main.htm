@@ -6,7 +6,7 @@
   <title>Stephen's Cool Cloud Song Player!</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link href="style/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
-  <link href="style/col-layout.css" rel="stylesheet" type="text/css" />
+  <link href="style/layout.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
   <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
   <script type="text/javascript" src="js/jplayer.playlist.min.js"></script>
@@ -63,8 +63,33 @@
    </div> <!-- end left col -->
 
    <div id="right-col">
-     <a href="javascript:;" id="playlist-add-hoedown">{b}</a>
+     <table id="song-tab">
+       <thead>
+	 <th scope="col">Title</th>
+	 <th scope="col">Time</th>
+	 <th scope="col">Artist</th>
+	 <th scope="col">Album</th>
+	 <th scope="col">Genre</th>
+       </thead>
+       <tbody>
+	 <tr id="playlist-add-b" class="odd">
+	   <td>Mad Kyle</td>
+	   <td>12:03</td>
+	   <td>Savant</td>
+	   <td>mads</td>
+	   <td>elec</td>
+	 </tr>
+	 </a>
+	 <tr id="playlist-add-p">
+	   <td>seattle</td>
+	   <td>4:03</td>
+	   <td>Savant</td>
+	   <td>mads</td>
+	   <td>elec</td>
+	 </tr>	 
+       </tbody>
+     </table>
    </div> <!-- end right col -->
-   
+   <a href="javascript:;" id="playlist-add-hoedown"></a>
 </body>
 </html>
