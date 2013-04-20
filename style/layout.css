@@ -1,0 +1,39 @@
+
+#left-col { 
+    float: left;
+    margin: 30px;
+}
+
+#right-col { 
+    float: left;
+    margin:30px; 
+}
+
+#song-tab tbody tr:hover td {
+	color: #009;
+}
+
+#song-tab {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    margin: 45px;
+    width: 480px;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+#song-tab th {
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px 8px;
+    color: #039;
+}
+
+#song-tab td {
+    padding: 8px;
+    color: #669;
+}
+
+#song-tab .odd {
+    background: #e8edff; 
+}
