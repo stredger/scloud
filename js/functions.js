@@ -2,28 +2,29 @@
 
 var playlist = null;
 var song_list = null;
+var song_obj = {"title":0, "time":1, "artist":2, "album":3, "genre":4}
 
 $(document).ready(function(){
     
     init_player()
     get_song_list();
-
-    $("#playlist-add-b").click(function() {
-	playlist.add({
-	    title:"b",
-	    artist:"b",
-	    mp3:"http://localhost:8000/b.mp3"
-	});
-    });
-    $("#playlist-add-p").click(function() {
-	playlist.add({
-	    title:"p",
-	    artist:"p",
-	    mp3:"http://localhost:8000/p.mp3"
-	});
-    });
-
+    init_add_function();
 });
+
+
+function init_add_function() {
+
+    $("tr").click(function () {
+	var location = $(this).attr("location")
+	var fields = $(this).find("td");
+
+    	playlist.add({
+    	    title:fields[song_obj["title"]].innerHTML,
+    	    artist:fields[song_obj["artist"]].innerHTML,
+    	    mp3:location
+    	});
+    });
+}
 
 
 function init_player() {
@@ -32,19 +33,8 @@ function init_player() {
 	jPlayer: "#jquery_jplayer_1",
 	cssSelectorAncestor: "#jp_container_1"
     }, [ 
+	// remove this after we init it
 	{ title: "placeholder" }
-	// {
-	//     title:"Vancouver Beatdown",
-        //     artist:"Zomboy",
-	//     //	mp3:"http://localhost:7654/Song/p.mp3"
-	//     mp3:"http://10.0.1.8:8000/p.mp3"
-	// },
-	// {
-	//     title:"Hoedown",
-        //     artist:"Zomboy",
-	//     //	mp3:"http://localhost:7654/Song/b.mp3"
-	//     mp3:"http://10.0.1.8:8000/b.mp3"
-	// }
     ], {
 	playlistOptions: {
             enableRemoveControls: true
@@ -57,14 +47,12 @@ function init_player() {
 
 function get_song_list() {
 
-    $.get("Song/List", function(data, status) {
-	
+    $.get("Song/List", function(data, status) {	
 	populate_song_table(data);
     });
 }
 
 function populate_song_table(songs) {
     song_list = songs;
-    alert(JSON.stringify(song_list));
 }
 //]]>
