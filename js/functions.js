@@ -5,21 +5,20 @@ var song_list = null;
 var song_element_list = [];
 var song_obj = {"title":0, "time":1, "artist":2, "album":3, "genre":4, "location":5}
 
-$(document).ready(function(){
+$(document).ready(function() {
     
-    init_player()
-    get_song_list();
+    init_player();
     init_add_function();
+    get_song_list();
+
 });
 
 
 function init_add_function() {
 
-    $("tr").click(function () {
-	var location = $(this).attr("location")
-	var fields = $(this).find("td");
-
-	alert("say whaat");
+    $("tr.song").live("click", function() {
+    	var location = $(this).data("location");
+    	var fields = $(this).find("td");
 
     	playlist.add({
     	    title:fields[song_obj["title"]].innerHTML,
@@ -33,8 +32,8 @@ function init_add_function() {
 function init_player() {
 
     playlist = new jPlayerPlaylist({
-	jPlayer: "#jquery_jplayer_1",
-	cssSelectorAncestor: "#jp_container_1"
+	jPlayer: "#jquery_jplayer",
+	cssSelectorAncestor: "#jp_container"
     }, [ 
 	// placeholder song so we load properly
 	{ title: "placeholder" }
@@ -49,6 +48,7 @@ function init_player() {
     // remove the placeholder
     playlist.remove();
 }
+
 
 function get_song_list() {
 
@@ -71,8 +71,8 @@ function create_song_table_entry(song, song_tab, odd) {
     if (odd) {
 	entry.addClass("odd");
     }
-    // use data? instead of attr???
-    entry.attr("location", song.location)
+    entry.data("location", song.location);
+
     title.html(song.title);
     time.html(song.time);
     artist.html(song.artist);
