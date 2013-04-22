@@ -2,7 +2,8 @@
 
 var playlist = null;
 var song_list = null;
-var song_obj = {"title":0, "time":1, "artist":2, "album":3, "genre":4}
+var song_element_list = [];
+var song_obj = {"title":0, "time":1, "artist":2, "album":3, "genre":4, "location":5}
 
 $(document).ready(function(){
     
@@ -17,6 +18,8 @@ function init_add_function() {
     $("tr").click(function () {
 	var location = $(this).attr("location")
 	var fields = $(this).find("td");
+
+	alert("say whaat");
 
     	playlist.add({
     	    title:fields[song_obj["title"]].innerHTML,
@@ -33,7 +36,7 @@ function init_player() {
 	jPlayer: "#jquery_jplayer_1",
 	cssSelectorAncestor: "#jp_container_1"
     }, [ 
-	// remove this after we init it
+	// placeholder song so we load properly
 	{ title: "placeholder" }
     ], {
 	playlistOptions: {
@@ -43,6 +46,8 @@ function init_player() {
 	supplied: "m4a, mp3",
 	wmode: "window"
     });
+    // remove the placeholder
+    playlist.remove();
 }
 
 function get_song_list() {
@@ -52,7 +57,48 @@ function get_song_list() {
     });
 }
 
+
+function create_song_table_entry(song, song_tab, odd) {
+
+    // create elements.. is there a better way to do this?
+    var entry = $(document.createElement("tr"));
+    var title = $(document.createElement("td"));
+    var time = $(document.createElement("td"));
+    var artist = $(document.createElement("td"));
+    var album = $(document.createElement("td"));
+    var genre = $(document.createElement("td"));
+
+    if (odd) {
+	entry.addClass("odd");
+    }
+    // use data? instead of attr???
+    entry.attr("location", song.location)
+    title.html(song.title);
+    time.html(song.time);
+    artist.html(song.artist);
+    album.html(song.album);
+    genre.html(song.genre);
+
+    entry.append(title);
+    entry.append(time);
+    entry.append(artist);
+    entry.append(album);
+    entry.append(genre);
+
+    song_tab.append(entry);
+
+    return entry;
+}
+
+
 function populate_song_table(songs) {
+
     song_list = songs;
+    var song_tab = $("#song-tab-data");
+
+    for (var i = 0; i < song_list.length; i++) {
+	song_element_list.push(create_song_table_entry(song_list[i], song_tab, i % 2));
+    }
+
 }
 //]]>
