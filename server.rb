@@ -39,7 +39,7 @@ def run_server(port, music_lib_dir, music_lib_file)
   puts "reading song list."
   songs = song_list_from_xml(music_lib_file)
   songs_sent = 0
-  song_chunk_length = 1
+  song_chunk_length = 1000
 
   puts "serving it up!"
 
@@ -97,8 +97,8 @@ end
 
 # main
 
-music_lib_dir = "test/"
-music_lib_file = "test/test.xml" #"iTunes Music Library.xml"
-#music_lib_file = "/Users/stredger/Music/iTunes/iTunes Music Library.xml"
+music_lib_dir = "/Users/stredger/Music/iTunes"
+#music_lib_file = "test/test.xml" #"iTunes Music Library.xml"
+music_lib_file = "/Users/stredger/Music/iTunes/iTunes Music Library.xml"
 
 run_server(7654, music_lib_dir, music_lib_file)

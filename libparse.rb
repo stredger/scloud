@@ -28,8 +28,10 @@ class Song
     end
   end
 
+
   def add_attr(attr)
     return if attr.nil?
+
     case attr[0]
     when "Name"
       @title = attr[1]
@@ -62,13 +64,20 @@ class Song
   end
 
   def to_json
-    return "{\"title\":\"#{@title}\", \"artist\":\"#{@artist}\", \"album\":\"#{@album}\", \"time\":#{@time}, \"genre\":\"#{@genre}\", \"location\":\"#{@location}\"}"
+    return "{\"title\":\"#{escape_for_json(@title)}\", \"artist\":\"#{escape_for_json(@artist)}\", \"album\":\"#{escape_for_json(@album)}\", \"time\":#{escape_for_json(@time)}, \"genre\":\"#{escape_for_json(@genre)}\", \"location\":\"#{escape_for_json(@location)}\"}"
   end
 
 end
 
 
 # Functions
+
+def escape_for_json(str)
+  # cant figure out how to esacpe \\ properly in ruby (\\\\ doesn't work), so just use the html code &#92
+  escape_seqs = [ ["\\","&#92"], ["/","\\/"], ["\"","\\\""], ["\n","\\n"], ["\r","\\r"], ["\t","\\t"], ["\x08","\\f"], ["\x0c","\\b"] ]
+  escape_seqs.each { |seq| str = str.gsub(seq[0], seq[1]) }
+  return str
+end
 
 def parse_line(line)
   vals = line.partition('><')
@@ -114,8 +123,8 @@ end
 
 
 def test
-  #music_lib = "test/test.xml"
-  music_lib = "/Users/stredger/Music/iTunes/iTunes Music Library.xml"
+  music_lib = "test/test.xml"
+  #music_lib = "/Users/stredger/Music/iTunes/iTunes Music Library.xml"
 
   require 'benchmark'
   songs = nil
@@ -133,3 +142,5 @@ def test
   #   puts "\n"
   # end
 end
+
+#test

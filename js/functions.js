@@ -39,7 +39,8 @@ function init_player() {
 	{ title: "placeholder" }
     ], {
 	playlistOptions: {
-            enableRemoveControls: true
+            enableRemoveControls: true,
+	    autoPlay: true
 	},
 	swfPath: "js",
 	supplied: "m4a, mp3",
@@ -99,14 +100,19 @@ function populate_song_table(songs) {
 
 function get_song_list() {
 
-    $.get("Song/List", function(data, status) {
+    $.getJSON("Song/List", function(data, status) {
 	var songs_left = data.pop();
+	console.log("Songs:" + data.length + "\nRemaining:" + songs_left);
 	populate_song_table(data);
 	if (songs_left) {
 	    // do this recursively as each iteration must be inside the
 	    // callback function of the prev to happen synchronously
 	    get_song_list();
 	}
+    }).fail(function(data) { 
+	console.log("ajax request failed");
+	console.log(data.responseText);
+	JSON.parse(data.responseText)
     });
 }
 //]]>
