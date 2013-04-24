@@ -29,6 +29,7 @@ class Song
   end
 
   def add_attr(attr)
+    return if attr.nil?
     case attr[0]
     when "Name"
       @title = attr[1]
@@ -41,7 +42,6 @@ class Song
     when "Genre"
       @genre = attr[1]
     when "Location"
-      # parse attr[1]
       @location = attr[1]
     else
       nil
@@ -72,9 +72,16 @@ end
 
 def parse_line(line)
   vals = line.partition('><')
-  ele = vals[0].match(/>.*</)[0].sub('>', '').sub('<', '')
-  attr = vals[2].match(/>.*</)[0].sub('>', '').sub('<', '')
-  return [ele, attr]
+  if vals.length > 2
+    unless (m = vals[0].match(/>.*</)).nil?
+      ele = m[0].sub('>', '').sub('<', '')
+      unless ( (m = vals[2].match(/>.*</)).nil? or ele.nil? )
+        attr = m[0].sub('>', '').sub('<', '')
+        return [ele, attr] unless attr.nil?
+      end
+    end
+  end
+  return nil
 end
 
 
@@ -94,8 +101,6 @@ def song_list_from_xml(xml_file)
         song.add_attr(line)
         i += 1
       end
-
-      puts song.format_location_path
       song_list << song.to_json if song.is_valid?
     else
       i += 1
@@ -106,13 +111,22 @@ end
 
 
 def test
-  music_lib = "test/test.xml" #"iTunes Music Library.xml"
+  #music_lib = "test/test.xml"
+  music_lib = "/Users/stredger/Music/iTunes/iTunes Music Library.xml"
 
-  songs = song_list_from_xml(music_lib)
+  require 'benchmark'
+  songs = nil
 
-  for s in songs
-    puts "--Song--"
-    puts s
-    puts "\n"
+  time = Benchmark.measure do
+    songs = song_list_from_xml(music_lib)
   end
+  
+  puts time
+  puts songs.length
+
+  # for s in songs
+  #   puts "--Song--"
+  #   puts s
+  #   puts "\n"
+  # end
 end
