@@ -136,11 +136,11 @@ def test
   puts time
   puts songs.length
 
-  # for s in songs
-  #   puts "--Song--"
-  #   puts s
-  #   puts "\n"
-  # end
+  for s in songs
+    puts "--Song--"
+    puts s
+    puts "\n"
+  end
 end
 
 #test

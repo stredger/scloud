@@ -58,10 +58,10 @@ def run_server(port, music_lib_dir, music_lib_file)
       while (i < song_chunk_length and i + songs_sent < songs.length)
         reply << songs[i + songs_sent] + ","
         i += 1
-        songs_sent += 1
       end
+      songs_sent += i
       reply << "#{songs.length - songs_sent}]"
-      puts reply
+      #puts reply
       session.print "HTTP/1.1 200/OK\r\nServer: Swick\r\nContent-type: application/json\r\n\r\n"
       session.print reply
       session.close

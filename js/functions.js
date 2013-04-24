@@ -20,6 +20,8 @@ function init_add_function() {
     	var location = $(this).data("location");
     	var fields = $(this).find("td");
 
+	console.log("Adding song location:" + location)
+
     	playlist.add({
     	    title:fields[song_obj["title"]].innerHTML,
     	    artist:fields[song_obj["artist"]].innerHTML,
@@ -109,7 +111,9 @@ function get_song_list() {
 	    // callback function of the prev to happen synchronously
 	    get_song_list();
 	}
-    }).fail(function(data) { 
+    }).fail(function(data) {
+	// song list returns application/json so if we fail chances are its
+	// a malformed json string, so lets try parsing it
 	console.log("ajax request failed");
 	console.log(data.responseText);
 	JSON.parse(data.responseText)
