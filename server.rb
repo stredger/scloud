@@ -37,7 +37,9 @@ def run_server(port, music_lib_dir, music_lib_file)
   webserver = TCPServer.new('localhost', port)
 
   puts "reading song list."
-  #song_reply = get_song_json(music_lib_file)
+  songs = song_list_from_xml(music_lib_file)
+  songs_sent = 0
+  song_chunk_length = 1
 
   puts "serving it up!"
 
@@ -51,12 +53,15 @@ def run_server(port, music_lib_dir, music_lib_file)
     if resource == ""
       resource = "main.htm"
     elsif resource == "Song/List"
-      songs = song_list_from_xml(music_lib_file)
       reply = "["
-      for s in songs
-        reply << s + ","
+      i = 0
+      while (i < song_chunk_length and i + songs_sent < songs.length)
+        reply << songs[i + songs_sent] + ","
+        i += 1
+        songs_sent += 1
       end
-      reply[-1] = "]"
+      reply << "#{songs.length - songs_sent}]"
+      puts reply
       session.print "HTTP/1.1 200/OK\r\nServer: Swick\r\nContent-type: application/json\r\n\r\n"
       session.print reply
       session.close

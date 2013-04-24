@@ -1,7 +1,7 @@
 //<![CDATA[
 
 var playlist = null;
-var song_list = null;
+var song_list = [];
 var song_element_list = [];
 var song_obj = {"title":0, "time":1, "artist":2, "album":3, "genre":4, "location":5}
 
@@ -86,11 +86,12 @@ function create_song_table_entry(song, song_tab, odd) {
 
 function populate_song_table(songs) {
 
-    song_list = songs;
+    //song_list = song_list.concat(songs);
     var song_tab = $("#song-tab-data");
 
-    for (var i = 0; i < song_list.length; i++) {
-	song_element_list.push(create_song_table_entry(song_list[i], song_tab, i % 2));
+    for (var i = 0; i < songs.length; i++) {
+	var entry = create_song_table_entry(songs[i], song_tab, i % 2)
+	song_element_list.push(entry);
     }
 
 }
@@ -98,11 +99,14 @@ function populate_song_table(songs) {
 
 function get_song_list() {
 
-    $.get("Song/List", function(data, status) {	
-	var fin = populate_song_table(data);
-	// if (!fin) {
-	//     get_song_list();
-	// }
+    $.get("Song/List", function(data, status) {
+	var songs_left = data.pop();
+	populate_song_table(data);
+	if (songs_left) {
+	    // do this recursively as each iteration must be inside the
+	    // callback function of the prev to happen synchronously
+	    get_song_list();
+	}
     });
 }
 //]]>
