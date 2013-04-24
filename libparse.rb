@@ -101,7 +101,10 @@ def song_list_from_xml(xml_file)
         song.add_attr(line)
         i += 1
       end
-      song_list << song.to_json if song.is_valid?
+      if song.is_valid?
+        song.format_location_path
+        song_list << song.to_json
+      end
     else
       i += 1
     end

@@ -18,10 +18,28 @@ def get_content_type(path)
   return "text/html"
 end
 
+def get_song_json(xml)
+  songs = song_list_from_xml(xml)
+  json = "["
+  for s in songs
+    json << s + ","
+  end
+  json[-1] = "]"
+  return json
+end
+
+
 def run_server(port, music_lib_dir, music_lib_file)
 
   base_dir = Dir.pwd + "/"
+
+  puts "starting server"
   webserver = TCPServer.new('localhost', port)
+
+  puts "reading song list."
+  #song_reply = get_song_json(music_lib_file)
+
+  puts "serving it up!"
 
   while (session = webserver.accept)
     request = session.gets

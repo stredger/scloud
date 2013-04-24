@@ -50,14 +50,6 @@ function init_player() {
 }
 
 
-function get_song_list() {
-
-    $.get("Song/List", function(data, status) {	
-	populate_song_table(data);
-    });
-}
-
-
 function create_song_table_entry(song, song_tab, odd) {
 
     // create elements.. is there a better way to do this?
@@ -68,6 +60,7 @@ function create_song_table_entry(song, song_tab, odd) {
     var album = $(document.createElement("td"));
     var genre = $(document.createElement("td"));
 
+    entry.addClass("song");
     if (odd) {
 	entry.addClass("odd");
     }
@@ -100,5 +93,16 @@ function populate_song_table(songs) {
 	song_element_list.push(create_song_table_entry(song_list[i], song_tab, i % 2));
     }
 
+}
+
+
+function get_song_list() {
+
+    $.get("Song/List", function(data, status) {	
+	var fin = populate_song_table(data);
+	// if (!fin) {
+	//     get_song_list();
+	// }
+    });
 }
 //]]>
