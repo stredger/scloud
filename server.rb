@@ -38,8 +38,6 @@ def run_server(port, music_lib_dir, music_lib_file)
 
   puts "reading song list."
   songs = song_list_from_xml(music_lib_file)
-  songs_sent = 0
-  song_chunk_length = 10000
 
   puts "serving it up!"
 
@@ -54,13 +52,10 @@ def run_server(port, music_lib_dir, music_lib_file)
       resource = "main.htm"
     elsif resource == "Song/List"
       reply = "["
-      i = 0
-      while (i < song_chunk_length and i + songs_sent < songs.length)
-        reply << songs[i + songs_sent] + ","
-        i += 1
+      for s in songs
+        reply << s + ","
       end
-      songs_sent += i
-      reply << "#{songs.length - songs_sent}]"
+      reply[-1] = "]"
       puts reply
       session.print "HTTP/1.1 200/OK\r\nServer: Swick\r\nContent-type: application/json\r\n\r\n"
       session.print reply

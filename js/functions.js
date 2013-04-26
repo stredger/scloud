@@ -102,14 +102,8 @@ function populate_song_table(songs) {
 function get_song_list() {
 
     $.getJSON("Song/List", function(data, status) {
-	var songs_left = data.pop();
-	console.log("Songs:" + data.length + "\nRemaining:" + songs_left);
+	console.log("Songs:" + data.length);
 	populate_song_table(data);
-	if (songs_left) {
-	    // do this recursively as each iteration must be inside the
-	    // callback function of the prev to happen synchronously
-	    get_song_list();
-	}
     }).fail(function(data) {
 	// song list returns application/json so if we fail chances are its
 	// a malformed json string, so lets try parsing it
