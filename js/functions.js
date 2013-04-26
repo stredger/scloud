@@ -93,10 +93,9 @@ function populate_song_table(songs) {
     var song_tab = $("#song-tab-data");
 
     for (var i = 0; i < songs.length; i++) {
-	var entry = create_song_table_entry(songs[i], song_tab, i % 2)
+	var entry = create_song_table_entry(songs[i], song_tab, i % 2);
 	song_element_list.push(entry);
     }
-
 }
 
 
@@ -116,7 +115,7 @@ function get_song_list() {
 	// a malformed json string, so lets try parsing it
 	console.log("ajax request failed");
 	console.log(data.responseText);
-	JSON.parse(data.responseText)
+	JSON.parse(data.responseText);
     });
 }
 //]]>
