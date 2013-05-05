@@ -1,5 +1,5 @@
 require "socket"
-require "libparse.rb"
+require "song_list.rb"
 
 
 def get_content_type(path)
@@ -18,16 +18,6 @@ def get_content_type(path)
   return "text/html"
 end
 
-def get_song_json(xml)
-  songs = song_list_from_xml(xml)
-  json = "["
-  for s in songs
-    json << s + ","
-  end
-  json[-1] = "]"
-  return json
-end
-
 
 def run_server(port, music_lib_dir, music_lib_file)
 
@@ -36,8 +26,8 @@ def run_server(port, music_lib_dir, music_lib_file)
   puts "starting server"
   webserver = TCPServer.new('localhost', port)
 
-  puts "reading song list."
-  songs = song_list_from_xml(music_lib_file)
+  puts "generating song lists"
+  song_lists = get_song_lists(music_lib_file)
 
   puts "serving it up!"
 
@@ -51,14 +41,9 @@ def run_server(port, music_lib_dir, music_lib_file)
     if resource == ""
       resource = "main.htm"
     elsif resource == "Song/List"
-      reply = "["
-      for s in songs
-        reply << s + ","
-      end
-      reply[-1] = "]"
-      puts reply
+      puts song_lists
       session.print "HTTP/1.1 200/OK\r\nServer: Swick\r\nContent-type: application/json\r\n\r\n"
-      session.print reply
+      session.print song_lists
       session.close
       next
     #elsif resource.include?("Song/")
@@ -93,7 +78,7 @@ end
 # main
 
 music_lib_dir = "/Users/stredger/Music/iTunes"
-#music_lib_file = "test/test.xml" #"iTunes Music Library.xml"
-music_lib_file = "/Users/stredger/Music/iTunes/iTunes Music Library.xml"
+music_lib_file = "test/test.xml"
+#music_lib_file = "/Users/stredger/Music/iTunes/iTunes Music Library.xml"
 
 run_server(7654, music_lib_dir, music_lib_file)

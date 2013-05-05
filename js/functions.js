@@ -102,8 +102,11 @@ function populate_song_table(songs) {
 function get_song_list() {
 
     $.getJSON("Song/List", function(data, status) {
-	console.log("Songs:" + data.length);
-	populate_song_table(data);
+	// data should be an object with 3 attrs. songs, album_list
+	// and genre_list. songs is an array of objects while the remaining
+	// are arrays of ints
+	console.log("Songs:" + data.songs.length);
+	populate_song_table(data.songs);
     }).fail(function(data) {
 	// song list returns application/json so if we fail chances are its
 	// a malformed json string, so lets try parsing it
